@@ -21,6 +21,7 @@ public class Main {
 
 //A method that selects a random key from the HashMap and prints it, representing the drawing of a playing card from a deck.
 //this method stores also the value of the card into the valueOfUserHand variable.
+	//test commit
 	public static void drawUserCard() {
 
 		Object[] cardKeys = playingCards.keySet().toArray(); // Here we are creating an array of objects called cardKeys
