@@ -6,17 +6,14 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-	static String answer;// this variable will account for our user's input throughout the program
-	static int valueOfUserHand = 0; // We are using a global variable to track the value of the user's hand
-									// throughout the game
-	static int valueOfDealerHand = 0; // We are using a global variable to track the value of the dealer's hand
-										// throughout the game
+	static String answer;
+	static int valueOfUserHand = 0; 
+									
+	static int valueOfDealerHand = 0; 
+	//in blackjack, dealers usually follow a standard of not "hitting" unless the value of their hand is under 17
+	static final int DEALER_HIT_LIMIT = 17;
+	static final int MAXIMUM_DECK_VALUE = 21;
 
-//A HashMap of Strings representing 52 playing  cards
-//This map will have a key/value relationship of the name of the card/value of that card 
-//Example: one row of our HashMap might look like "Key: Ace of Spades/ Value: 11"
-//The values of the cards range from lowest value (Two) to highest (Ace). From highest to lowest -- Ace is 11, king 10, queen 10, 10 is 10, etc..
-//For the sake of simplicity,  this program does not compare the values of face-cards. All face-cards are worth a value  of 10.
 	public static Map<String, Integer> playingCards = new HashMap<String, Integer>();
 
 //A method that selects a random key from the HashMap and prints it, representing the drawing of a playing card from a deck.
@@ -24,34 +21,20 @@ public class Main {
 	//test commit
 	public static void drawUserCard() {
 
-		Object[] cardKeys = playingCards.keySet().toArray(); // Here we are creating an array of objects called cardKeys
-																// and setting it to the keySet of the Hashmap
-		Object key = cardKeys[new Random().nextInt(cardKeys.length)]; // We are instantiating a new object called "key"
-																		// in which we can store a random selection from
-																		// our cardKeys array using the Random class
-		valueOfUserHand = valueOfUserHand + playingCards.get(key); // We use .nextInt to iterate thru the array and get
-																	// a random element
-																	// we are adding the value of our random selection
-																	// to the valueOfUserHand variable
-		System.out.println(key); // We print the value of the card to the user
-		playingCards.remove(key); // Here we also make sure to remove the key from the hashmap, to remove the
-									// possibility of either the user or dealer drawing a card that was drawn
-									// earlier.
+		Object[] cardKeys = playingCards.keySet().toArray(); 
+		
+		Object key = cardKeys[new Random().nextInt(cardKeys.length)]; 
+		
+		valueOfUserHand = valueOfUserHand + playingCards.get(key); 
+		
+		System.out.println(key); 
+		playingCards.remove(key); 
 
 	}
 
 	public static void drawDealerCard() {
-		// Has same function as drawing user hand, except we add the value of the cards
-		// to a separate variable to represent the value of the dealer's hand.
-		// We also do not print the value of the dealers hand (Obviously in a game of
-		// black jack you would not know the dealers hand)
-
-		// In black jack, as a general rule of thumb, the dealer will use a strategy in
-		// which he only draws cards to the point that his hand is equal to
-		// 16, to reduce the likelihood of him drawing a card that will cause him to
-		// bust
-		// We use this while loop to simulate that logic
-		while (valueOfDealerHand < 17) {
+		
+		while (valueOfDealerHand < DEALER_HIT_LIMIT) {
 			Object[] cardKeys = playingCards.keySet().toArray();
 			Object key = cardKeys[new Random().nextInt(cardKeys.length)];
 			valueOfDealerHand = valueOfDealerHand + playingCards.get(key);
@@ -68,11 +51,10 @@ public class Main {
 		Scanner scan = new Scanner(System.in); // We are using the Scanner class to read the user's input
 		answer = scan.next();
 
-		String one = Integer.toString(1); // We are using the toString method to read the user input as String
-		String two = Integer.toString(2); // I did this because it makes it much easier to validate the input and if the
-											// user puts in strange characters it does not throw an error
-		if (answer.equals(one)) { // Here, if the user does decide to put in strange characters, it does not
-									// matter because it will all be read as string.
+		String one = Integer.toString(1); 
+		String two = Integer.toString(2); 
+		
+		if (answer.equals(one)) { 
 			System.out.println("Dealer: Let's play!");
 			Main.playBlackJack();
 		} else if (answer.equals(two)) {
@@ -87,25 +69,25 @@ public class Main {
 
 	public static void calculateWinner() {
 
-		if (valueOfUserHand > valueOfDealerHand && valueOfUserHand < 21) {
+		if (valueOfUserHand > valueOfDealerHand && valueOfUserHand < MAXIMUM_DECK_VALUE) {
 			System.out.println("You won!" + " My hand only had a value of " + valueOfDealerHand + " and yours had "
 					+ valueOfUserHand + ".");
-		} else if (valueOfUserHand > valueOfDealerHand && valueOfUserHand <= 21) {
+		} else if (valueOfUserHand > valueOfDealerHand && valueOfUserHand <= MAXIMUM_DECK_VALUE) {
 			System.out.println("You won! I only had " + valueOfDealerHand);
-		} else if (valueOfUserHand > 21 && valueOfDealerHand < 21) {
+		} else if (valueOfUserHand > MAXIMUM_DECK_VALUE && valueOfDealerHand < MAXIMUM_DECK_VALUE) {
 			System.out.println("It looks like you busted since your hand is over 21, so I won that round.");
-		} else if (valueOfUserHand > 21 && valueOfDealerHand > 21) {
+		} else if (valueOfUserHand > MAXIMUM_DECK_VALUE && valueOfDealerHand > MAXIMUM_DECK_VALUE) {
 			System.out.println("It looks like we both busted, since both our hands are over 21. Nobody wins!");
-		} else if (valueOfUserHand < valueOfDealerHand && valueOfDealerHand <= 21) {
+		} else if (valueOfUserHand < valueOfDealerHand && valueOfDealerHand <= MAXIMUM_DECK_VALUE) {
 			System.out.println("My hand had a better value of " + valueOfDealerHand + ", so I won this one.");
 		} else if (valueOfUserHand == valueOfDealerHand) {
 			System.out.println("Looks like we tied that one. My hand had a value of " + valueOfDealerHand
 					+ " and you also had " + valueOfUserHand + ".");
-		} else if (valueOfUserHand < valueOfDealerHand && valueOfDealerHand > 21) {
+		} else if (valueOfUserHand < valueOfDealerHand && valueOfDealerHand > MAXIMUM_DECK_VALUE) {
 			System.out.println("Ugh, I busted. Looks like you win.");
-		} else if (valueOfUserHand == 21 && valueOfUserHand != valueOfDealerHand) {
+		} else if (valueOfUserHand == MAXIMUM_DECK_VALUE && valueOfUserHand != valueOfDealerHand) {
 			System.out.println("BlackJack--nice! You win!");
-		} else if (valueOfUserHand == 21 && valueOfDealerHand == 21) {
+		} else if (valueOfUserHand == MAXIMUM_DECK_VALUE && valueOfDealerHand == MAXIMUM_DECK_VALUE) {
 			System.out.println("Whoa--we both got BlackJack. It's a  tie!");
 		} else {
 			System.out.println("Hmm not sure what happened here. You have to excuse us we just opened recently.");
