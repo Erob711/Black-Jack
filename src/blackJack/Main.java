@@ -16,8 +16,8 @@ public class Main {
 
 	public static Map<String, Integer> playingCards = new HashMap<String, Integer>();
 
-//A method that selects a random key from the HashMap and prints it, representing the drawing of a playing card from a deck.
-//this method stores also the value of the card into the valueOfUserHand variable.
+	//A method that selects a random key from the HashMap and prints it, representing the drawing of a playing card from a deck.
+	//this method stores also the value of the card into the valueOfUserHand variable.
 	//test commit
 	public static void drawUserCard() {
 
@@ -186,9 +186,8 @@ public class Main {
 									// Main.calculateWinner method and print the winner
 			Main.calculateWinner();
 			System.out.println("Thanks for playing!");
-			System.out.println("Press any key to play again, or press 2 to exit."); // We give the player the option to
-																					// play again
-			Scanner scanner = new Scanner(System.in);
+			System.out.println("Press any key to play again, or press 2 to exit."); 
+																					
 			answer = scan.next();
 			String dos = Integer.toString(2);
 			if (!answer.equals(dos)) { // Here, if the player does want to play again, we need to make sure the global
